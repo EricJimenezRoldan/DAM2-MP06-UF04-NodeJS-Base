@@ -36,13 +36,15 @@ async function readXML(filePath) {
 }
 
 async function insertUsers(users) {
-    await mongoose.connect(config.MONGODB_URI);
-    for (const user of users) {
+  await mongoose.connect(config.MONGODB_URI);
+  for (const user of users) {
       const processedUser = processUser(user);
+      // Utiliza upsert: true para insertar o actualizar un usuario
       await User.updateOne({ id: processedUser.id }, processedUser, { upsert: true });
-    }
-    await mongoose.disconnect();
+  }
+  await mongoose.disconnect();
 }
+
 
 async function main() {
   const filePath = './data/exemples/users.xml'; // Adjust the path as necessary
